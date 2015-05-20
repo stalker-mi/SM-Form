@@ -6,9 +6,9 @@
     <movie input="" />
     <movie path="bin\SMForm.swf" />
     <movie fps="30" />
-    <movie width="480" />
-    <movie height="762" />
-    <movie version="17" />
+    <movie width="320" />
+    <movie height="480" />
+    <movie version="0" />
     <movie minorVersion="0" />
     <movie platform="AIR Mobile" />
     <movie background="#FFFFFF" />
@@ -54,6 +54,7 @@
   <libraryPaths>
     <element path="libs\feathers.swc" />
     <element path="libs\starling.swc" />
+    <element path="assets\my.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

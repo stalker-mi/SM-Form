@@ -4,8 +4,10 @@
     import starling.display.Sprite;
     import starling.events.Event;
     import starling.utils.AssetManager;
-	import starling.textures.Texture;
+	import starling.text.TextField;
 	
+	import activity.*;
+
     /** The Root class is the topmost display object in your game. It loads all the assets
      *  and displays a progress bar while this is happening. Later, it is responsible for
      *  switching between game and menu. For this, it listens to "START_GAME" and "GAME_OVER"
@@ -13,44 +15,44 @@
      *  controls the high level behaviour of your game. */
     public class Root extends Sprite
     {
-		[Embed(source="../assets/textures/2x/background.jpg")] private var my_background:Class;
         private static var sAssets:AssetManager;
-        
         private var mActiveScene:Sprite;
         
         public function Root()
         {
-            addEventListener(Menu.START_GAME, onStartGame);
-            addEventListener(Game.GAME_OVER,  onGameOver);
-            
+            //addEventListener(Menu.LOG_IN, onStartGame);
+			addEventListener(Menu.SIGN_IN, onSignIn);
+            addEventListener(SignIn_step1.NEXT,  onNext);
+			addEventListener(SignIn_step1.BACK,  onNext);
             // not more to do here -- Startup will call "start" immediately.
         }
         
         public function start(assets:AssetManager):void
         {
-            // the asset manager is saved as a static variable; this allows us to easily access
-            // all the assets from everywhere by simply calling "Root.assets"
+			sAssets = assets;
+			addChild(new Image(sAssets.getTexture("my_background0000")));
+			var txt:TextField = new TextField(310, 35, "Форма входа/регистрации", "Verdana", 19, 128, true);
+			txt.x=int((Constants.STAGE_WIDTH - txt.width) / 2);;
+			txt.y = 19;
+			addChild(txt);
+			showScene(Menu);
+        }
+		
+        private function onSignIn(event:Event):void
+        {
+            trace("Sign In!");
+            showScene(SignIn_step1);
+        }
+		
+		private function onNext(event:Event, data:Array):void
+        {
+            trace("This step: "+event.type);
+            if (event.type == "next1") showScene(SignIn_step2);
+			if (event.type == "back1") showScene(Menu);
+        }
+		
 
-            sAssets = assets;
-           // addChild(new Image(assets.getTexture("Main_my_background")));
-		   addChild(new Image(Texture.fromData(my_background)));
-            showScene(Menu);
-        }
-        
-        private function onGameOver(event:Event, score:String):void
-        {
-			
-            trace("Game Over! Score: " + score);
-            showScene(Menu);
-        }
-        
-        private function onStartGame(event:Event, gameMode:String):void
-        {
-            trace("Game starts! Mode: " + gameMode);
-            if(gameMode=="add") showScene(Game);
-			if(gameMode=="show") showScene(Show);
-        }
-        
+		
         private function showScene(screen:Class):void
         {
             if (mActiveScene) mActiveScene.removeFromParent(true);

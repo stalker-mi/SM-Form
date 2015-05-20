@@ -1,4 +1,5 @@
-﻿package  {
+﻿package activity
+{
 	
 	import starling.display.Sprite;
 	import starling.display.Button;

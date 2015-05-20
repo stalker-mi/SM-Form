@@ -16,5 +16,13 @@ package
         
         public static const STAGE_WIDTH:int  = 320;
         public static const STAGE_HEIGHT:int = 480;
+		
+		public static const ERROR:Array = new Array(
+		"Неизвестная ощибка",
+		"Поле пустое",
+		"Поле должно содержать буквы одного алфавита",
+		"Фамилия и имя должны быть набраны буквами одного алфавита"
+		);
+		
     }
 }
