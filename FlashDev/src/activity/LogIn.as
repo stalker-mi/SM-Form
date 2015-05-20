@@ -11,12 +11,12 @@
 	import feathers.controls.ScrollContainer;
 	import starling.display.Quad;
 		
-	public class Show extends Sprite {
+	public class LogIn extends Sprite {
 
 		 public static const GAME_OVER:String = "gameOver";
 
 
-		public function Show() {
+		public function LogIn() {
 			
 			var newFile:File = File.applicationStorageDirectory;
   			newFile = newFile.resolvePath("preferences.xml");
@@ -26,7 +26,7 @@
 			stream.close();
 			
 			var container:ScrollContainer = new ScrollContainer();
-			container.width = 400;
+			container.width = 300;
 			container.height = 300;
 			addChild( container );
 			

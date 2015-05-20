@@ -3,7 +3,6 @@ package
     import flash.desktop.NativeApplication;
     import flash.display.Sprite;
     import flash.events.Event;
-	
     import flash.geom.Rectangle;
     import flash.system.Capabilities;
 	
@@ -21,6 +20,7 @@ package
     [SWF(width="320", height="480", frameRate="30", backgroundColor="#000000")]
     public class Main extends Sprite
     {
+		//Вставка текстур
 		[Embed(source = "../assets/assets.png")] private var texture:Class;
 		private static var xml:XML=new XML(
 <TextureAtlas imagePath="assets.png">
@@ -40,14 +40,14 @@ package
 
 );
 		[Embed(source="../assets/click.mp3")] private var my_sound:Class;
-        private const StageWidth:int  = 320;
-        private const StageHeight:int = 480;
+        private const StageWidth:int  = Constants.STAGE_WIDTH;
+        private const StageHeight:int = Constants.STAGE_HEIGHT;
 
         private var mStarling:Starling;
 
         public function Main()
         {
-            
+            // Создание и оптимизация сцены
             var iOS:Boolean = SystemUtil.platform == "IOS";
             var stageSize:Rectangle  = new Rectangle(0, 0, StageWidth, StageHeight);
             var screenSize:Rectangle = new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight);
@@ -57,14 +57,15 @@ package
             Starling.multitouchEnabled = true; // useful on mobile devices
             Starling.handleLostContext = true; // recommended everywhere when using AssetManager
             RenderTexture.optimizePersistentBuffers = iOS; // safe on iOS, dangerous on Android
-
+			
+			// создание старлинга
             mStarling = new Starling(Root, stage, viewPort, null, "auto", "auto");
             mStarling.stage.stageWidth    = StageWidth;  // <- same size on all devices!
             mStarling.stage.stageHeight   = StageHeight; // <- same size on all devices!
             mStarling.enableErrorChecking = Capabilities.isDebugger;
             mStarling.start();
 			
-
+			// при сворачивании останавливаем старлинг
             if (!SystemUtil.isDesktop)
             {
                 NativeApplication.nativeApplication.addEventListener(
@@ -73,14 +74,17 @@ package
                     flash.events.Event.DEACTIVATE, function (e:*):void { mStarling.stop(true); });
             }
 			
-		
+			// при создании сцены
 			mStarling.addEventListener(starling.events.Event.ROOT_CREATED, function():void
             {
+				// загрузчик
 				var assets:AssetManager = new AssetManager(scaleFactor);
 				assets.verbose = Capabilities.isDebugger;
+				// добавляем текстуры и звук
 				assets.addTextureAtlas("assets", new TextureAtlas(Texture.fromData(texture), xml));
 				assets.addSound("click", new my_sound());
 				var root:Root = mStarling.root as Root;
+				// запускаем!
 				root.start(assets);
 			});
 			
