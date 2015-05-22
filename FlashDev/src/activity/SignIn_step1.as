@@ -2,14 +2,13 @@
 {
     import starling.display.Image;
     import starling.display.Sprite;
+	import starling.text.TextField;
     import starling.events.TouchEvent;
     import starling.events.TouchPhase;
-	import starling.text.TextField;
 	import starling.display.Button;
 	import starling.events.Event;
 	
-	import feathers.controls.TextInput;
-	import feathers.events.FeathersEventType;
+	
 
     public class SignIn_step1 extends SignIn
     {
@@ -17,97 +16,28 @@
 		public static const NEXT:String = "next1";
 		public static const BACK:String = "back1";
 		private var error:Boolean;
-		private var error1:TextField;
-		private var error2:TextField;
 		
         public function SignIn_step1()
         {
-			MY_BACK=BACK;
             init();
         }
 
 		
         private function init():void
         {	
+			// кнопка назад
+			AddBack(BACK);
 			// поле Фамилия
+			AddText(1, 103, "Фамилия", Root.user.Surname, 0, true);
+			// ошибки фамилии
+			addEventListener("Фамилия", function(e:Event, data:String):void { proverka_sname(data); } );
+			// поле имя
+			AddText(2, 190, "Имя", Root.user.Name, 0, true);
+			// ошибки имени
+			addEventListener("Имя", function(e:Event, data:String):void { proverka_name(data); } );
 			
-			var txt:TextField = new TextField(126, 35, "Фамилия", "Verdana", 24);
-			txt.x=int((Constants.STAGE_WIDTH - txt.width) / 2);
-			txt.y=93;
-			addChild(txt);
-			
-			// поле ввода фамилии
-			var input:TextInput = new TextInput();
-			input.x = 67;
-			input.y = 133;
-			input.isEditable = true;
-			input.paddingLeft = 20;
-			input.textEditorProperties.fontSize = 20;
-			if (Root.user.Surname) input.text = Root.user.Surname;
-			input.backgroundSkin = new Image(Root.assets.getTexture("border0000"));
-			input.maxChars = 12;
-			input.addEventListener(FeathersEventType.FOCUS_OUT, function():void {
-				// Заменяет выражение типа ВыРаЖЕниЕ на Выражение
-				input.text = input.text.substr(0,1).toUpperCase()+input.text.substr(1).toLowerCase();
-				//очищаем
-				error1.text = "";
-				//цвет красный
-				error1.color = 0xff0000;
-				// локальная проверка фамилии
-				proverka_sname(input.text);});
-			input.addEventListener(FeathersEventType.FOCUS_IN, function():void {
-				// цвет желтый
-				error1.color = 0xffaa00;
-				// вывод подсказок
-				error1.text = Constants.TIPS[0];
-			});
-			addChild(input);
-			
-			// поле ошибок для фамилии
-			error1 = new TextField(200, 35, "", "Verdana", 9,0xff0000);
-			error1.x=int((Constants.STAGE_WIDTH - error1.width) / 2);
-			error1.y=163;
-			addChild(error1);
-			
-			txt = new TextField(60, 50, "Имя", "Verdana", 24);
-			txt.x=int((Constants.STAGE_WIDTH - txt.width) / 2);;
-			txt.y=180;
-			addChild(txt);
-			
-			// поле ввода имени
-			var input1:TextInput = new TextInput();
-			input1.x = 67;
-			input1.y = 225;
-			input1.isEditable = true;
-			input1.paddingLeft = 20;
-			input1.textEditorProperties.fontSize = 20;
-			if (Root.user.Name) input1.text = Root.user.Name;
-			input1.backgroundSkin = new Image(Root.assets.getTexture("border0000"));
-			input1.addEventListener(FeathersEventType.FOCUS_OUT, function():void {
-				// Заменяет выражение типа ВыРаЖЕниЕ на Выражение
-				input1.text = input1.text.substr(0,1).toUpperCase()+input1.text.substr(1).toLowerCase();
-				//очищаем
-				error2.text = "";
-				//цвет красный
-				error2.color = 0xff0000;
-				// локальная проверка имени
-				proverka_name(input1.text); } );
-			input1.addEventListener(FeathersEventType.FOCUS_IN, function():void {
-				// цвет желтый
-				error2.color = 0xffaa00;
-				// вывод подсказок
-				error2.text = Constants.TIPS[0];
-			});
-			addChild(input1);
-			
-			// поле ошибок для имени
-			error2 = new TextField(200, 35, "", "Verdana", 9,0xff0000);
-			error2.x=int((Constants.STAGE_WIDTH - error2.width) / 2);
-			error2.y=255;
-			addChild(error2);
-			
-			// пол Пол
-			txt = new TextField(60, 50, "Пол", "Verdana", 24);
+			// поле Пол
+			var txt:TextField = new TextField(60, 50, "Пол", "Verdana", 24);
 			txt.x=int((Constants.STAGE_WIDTH - txt.width) / 2);;
 			txt.y=280;
 			addChild(txt);
@@ -153,15 +83,17 @@
             button.y = 400;
             button.addEventListener(Event.TRIGGERED, function():void {
 				Root.assets.playSound("click");
+				
 				// Если прошло проверку
-				if (proverka(input.text, input1.text, sex_f.alpha, sex_m.alpha)) {
+				if (proverka(mData[1].text, mData[2].text, sex_f.alpha, sex_m.alpha)) {
 					// вставляем поля
-					Root.user.Surname = input.text;
-					Root.user.Name = input1.text;
+					Root.user.Surname = mData[1].text;
+					Root.user.Name = mData[2].text;
 					if (sex_m.alpha == 1) Root.user.Sex = "m";
 					else Root.user.Sex = "f";
+					
 					// идем Далее
-					dispatchEventWith(NEXT, true, new Array(input.text, input1.text, sex_m.alpha));
+					dispatchEventWith(NEXT, true);
 				}
 			});
             addChild(button);
@@ -174,21 +106,21 @@
 			// ошибка
 			var this_error:Boolean;
 			// если были локальные ошибки
-			if (error1.text != "" || error2.text != "") this_error = true;
+			if (errorsArr[1].text != "" || errorsArr[2].text != "") this_error = true;
 			// если не выбрали пол
-			if (alpha1 == alpha2) this_error = trace_error(error2, 2);
+			if (alpha1 == alpha2) this_error = trace_error(errorsArr[2], 2);
 			// если выбрали пол
-			if(error2.text==Constants.ERROR[2] && alpha1 != alpha2) this_error = false;
+			if(errorsArr[2].text==Constants.ERROR[2] && alpha1 != alpha2) this_error = false;
 			// если поля пустые
-			if (text1 == "") this_error = trace_error(error1, 1);
-			if (text2 == "") this_error = trace_error(error2, 1); 
+			if (text1 == "") this_error = trace_error(errorsArr[1], 1);
+			if (text2 == "") this_error = trace_error(errorsArr[2], 1); 
 			// Проверка на одинаковый алфавит
 			var pattern1:RegExp = /^[a-zA-Z]+$/;
 			var pattern2:RegExp = /^[а-яА-ЯёЁ]+$/;
 			if (pattern1.test(text1) && pattern2.test(text2)) 
-			this_error = trace_error(error2, 5);
+			this_error = trace_error(errorsArr[2], 5);
 			if (pattern1.test(text2) && pattern2.test(text1)) 
-			this_error = trace_error(error2, 5);
+			this_error = trace_error(errorsArr[2], 5);
 			
 			if (!this_error) 
 				return true;
@@ -199,18 +131,18 @@
 		// Проверка фамилии
 		private function proverka_sname(text:String):Boolean {
 			//поле пустое
-			if (text == "") return trace_error(error1, 1);
+			if (text == "") return trace_error(errorsArr[1], 1);
 			var pattern:RegExp = /^[а-яА-ЯёЁa-zA-Z0-9]{2,}$/;
-			if (!pattern.test(text)) return trace_error(error1, 6);
+			if (!pattern.test(text)) return trace_error(errorsArr[1], 6);
 			// вводятся буквы только латиницы или кириллицы
 			pattern = /^[а-яА-ЯёЁa-zA-Z]+$/; 
-			if (!pattern.test(text)) return trace_error(error1, 3);
+			if (!pattern.test(text)) return trace_error(errorsArr[1], 3);
 			// проверка на латиницу
 			pattern =/^[a-zA-Z]+$/;
 			if (!pattern.test(text)) {
 				// проверка на киррилицу
 				pattern =/^[а-яА-ЯёЁ]+$/;
-				if (!pattern.test(text)) return trace_error(error1, 4);
+				if (!pattern.test(text)) return trace_error(errorsArr[1], 4);
 			}
 			
 			return false;
@@ -218,27 +150,22 @@
 		
 		// Проверка имени
 		private function proverka_name(text:String):Boolean {
-			if(text=="") return trace_error(error2, 1);
+			if(text=="") return trace_error(errorsArr[2], 1);
 			// вводятся буквы только латиницы или кириллицы
 			var pattern:RegExp = /^[а-яА-ЯёЁa-zA-Z]/;
-			if (!pattern.test(text)) return trace_error(error2, 3);
+			if (!pattern.test(text)) return trace_error(errorsArr[2], 3);
 			// проверка на латиницу
 			pattern =/^[a-zA-Z]+$/;
 			if (!pattern.test(text)) {
 				// проверка на киррилицу
 				pattern =/^[а-яА-ЯёЁ]+$/;
-				if (!pattern.test(text)) return trace_error(error2, 4);
+				if (!pattern.test(text)) return trace_error(errorsArr[2], 4);
 			}
 			return false;
 			
 		}
 		
-		// вывод ошибок
-		private function trace_error(error:TextField, number_error:int = 0) :Boolean
-		{
-			error.text = Constants.ERROR[number_error];
-			return true;
-		}
+		
         
 
     }

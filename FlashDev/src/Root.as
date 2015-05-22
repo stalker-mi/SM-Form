@@ -27,6 +27,7 @@
 			addEventListener(SignIn_step1.BACK,  onNext);
 			addEventListener(SignIn_step2.NEXT,  onNext);
 			addEventListener(SignIn_step2.BACK,  onNext);
+			addEventListener(SignIn_step3.BACK,  onNext);
             // not more to do here -- Startup will call "start" immediately.
         }
         
@@ -50,11 +51,16 @@
 		
 		private function onNext(event:Event):void
         {
-            trace("This step: "+event.type);
+            trace("This step: " + event.type);
+			// события для SignIn_step1
             if (event.type == "next1") showScene(SignIn_step2);
 			if (event.type == "back1") showScene(Menu);
+			// события для SignIn_step2
 			if (event.type == "next2") showScene(SignIn_step3);
 			if (event.type == "back2") showScene(SignIn_step1);
+			// события для SignIn_step3
+			if (event.type == "back3") showScene(SignIn_step2);
+			if (event.type == "ok") showScene(Menu);
         }
 		
 
