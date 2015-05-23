@@ -107,7 +107,7 @@ package activity
 		private function proverka_pas1(text:String):Boolean {
 			//поле пустое
 			if (text == "") return trace_error(errorsArr[3], 1);
-			var pattern:RegExp =/^[a-zA-Z0-9-_*.#%$!&]{5,}$/; 
+			var pattern:RegExp =/^[a-zA-Z0-9-_*.#%$!&@]{5,}$/; 
 			if (!pattern.test(text)) return trace_error(errorsArr[3], 10);
 			var k:int = text.length;
 			if (text.indexOf("qwerty") != -1) k -= 3;
@@ -118,9 +118,9 @@ package activity
 				// букцы A-Z
 				else if (text.charCodeAt(i) >= 97 && text.charCodeAt(i) <= 122) k += 2;
 				// буквы a-z
-				else if (text.charCodeAt(i) >= 65 && text.charCodeAt(i) <= 90) k = +3;
+				else if (text.charCodeAt(i) >= 65 && text.charCodeAt(i) <= 90) k += 3;
 				// спецсимволы
-				else k = +4;
+				else k += 4;
 			}
 			if(k<21) return trace_error(errorsArr[3], 12);
 			if(mData[4].text!=text) return trace_error(errorsArr[4], 11);

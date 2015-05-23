@@ -8,6 +8,7 @@ package activity
 	
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.events.IOErrorEvent;
 	
 	/**
 	 * ...
