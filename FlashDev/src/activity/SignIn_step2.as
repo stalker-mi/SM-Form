@@ -25,17 +25,19 @@ package activity
 			// кнопка назад
 			AddBack(BACK);
 			// поле E-mail
-			AddText(1, 90, "E-mail", Root.user.Email, 1, false);
+			AddText(1, 90, "E-mail", Root.user.Email, 1, 2);
 			// ошибки e-mial
 			addEventListener("E-mail", function(e:Event, data:String):void { proverka_email(data); } );
 			// поле Логин
-			AddText(2, 165, "Логин", Root.user.Login, 2, false);
+			AddText(2, 165, "Логин", Root.user.Login, 2, 2);
 			addEventListener("Логин", function(e:Event, data:String):void { proverka_login(data); } );
 			// поле Пароль
-			AddText(3, 244, "Пароль", null, 3, false);
+			AddText(3, 244, "Пароль", null, 3, 3);
+			mData[3].displayAsPassword = true;
 			addEventListener("Пароль", function(e:Event, data:String):void { proverka_pas1(data); } );
 			// поле Пароль
-			AddText(4, 319, "Повторить пароль", null, 4, false);
+			AddText(4, 319, "Повторить пароль", null, 4, 3);
+			mData[4].displayAsPassword = true;
 			addEventListener("Повторить пароль", function(e:Event, data:String):void { proverka_pas2(data); } );
 			
 			// кнопка далее
@@ -65,7 +67,7 @@ package activity
 			// ошибка
 			var this_error:Boolean;
 			// если были локальные ошибки
-			if (errorsArr[1].text != "" || errorsArr[2].text != "") this_error = true;
+			if (errorsArr[1].text != "" || errorsArr[2].text != "" || errorsArr[3].text != "" || errorsArr[4].text != "") this_error = true;
 			// если поля пустые
 			if (text1 == "") this_error = trace_error(errorsArr[1], 1);
 			if (text2 == "") this_error = trace_error(errorsArr[2], 1); 
@@ -83,6 +85,9 @@ package activity
 		private function proverka_email(text:String):Boolean {
 			//поле пустое
 			if (text == "") return trace_error(errorsArr[1], 1);
+			// валидация e-mail
+			var pattern:RegExp = /^(\S+)@([a-z0-9-]+)(\.)([a-z]{2,4})(\.?)([a-z]{0,4})+$/;
+			if (!pattern.test(text)) return trace_error(errorsArr[1], 7);
 			
 			return false;
 		}
@@ -91,6 +96,9 @@ package activity
 		private function proverka_login(text:String):Boolean {
 			//поле пустое
 			if (text == "") return trace_error(errorsArr[2], 1);
+			// Имя пользователя (с ограничением 2-10 символов, которыми могут быть буквы и цифры, первый символ обязательно буква)
+			var pattern:RegExp = /^[a-zA-Z][a-zA-Z0-9-_\.]{1,10}$/;
+			if (!pattern.test(text)) return trace_error(errorsArr[2], 8);
 			
 			return false;
 		}
@@ -99,7 +107,23 @@ package activity
 		private function proverka_pas1(text:String):Boolean {
 			//поле пустое
 			if (text == "") return trace_error(errorsArr[3], 1);
-			
+			var pattern:RegExp =/^[a-zA-Z0-9-_*.#%$!&]{5,}$/; 
+			if (!pattern.test(text)) return trace_error(errorsArr[3], 10);
+			var k:int = text.length;
+			if (text.indexOf("qwerty") != -1) k -= 3;
+			if (text.indexOf("123")!=-1) k --;
+			for (var i:int = 0; i < text.length; i++ ) {
+				// цифры от 0 до 9
+				if (text.charCodeAt(i) >= 48 && text.charCodeAt(i) <= 58) k++;
+				// букцы A-Z
+				else if (text.charCodeAt(i) >= 97 && text.charCodeAt(i) <= 122) k += 2;
+				// буквы a-z
+				else if (text.charCodeAt(i) >= 65 && text.charCodeAt(i) <= 90) k = +3;
+				// спецсимволы
+				else k = +4;
+			}
+			if(k<21) return trace_error(errorsArr[3], 12);
+			if(mData[4].text!=text) return trace_error(errorsArr[4], 11);
 			return false;
 		}
 		
@@ -107,6 +131,8 @@ package activity
 		private function proverka_pas2(text:String):Boolean {
 			//поле пустое
 			if (text == "") return trace_error(errorsArr[4], 1);
+			if(mData[3].text=="") return trace_error(errorsArr[4], 9);
+			if(mData[3].text!=text) return trace_error(errorsArr[4], 11);
 			
 			return false;
 		}

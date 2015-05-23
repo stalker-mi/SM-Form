@@ -28,11 +28,11 @@
 			// кнопка назад
 			AddBack(BACK);
 			// поле Фамилия
-			AddText(1, 103, "Фамилия", Root.user.Surname, 0, true);
+			AddText(1, 103, "Фамилия", Root.user.Surname, 0, 1);
 			// ошибки фамилии
 			addEventListener("Фамилия", function(e:Event, data:String):void { proverka_sname(data); } );
 			// поле имя
-			AddText(2, 190, "Имя", Root.user.Name, 0, true);
+			AddText(2, 190, "Имя", Root.user.Name, 0, 1);
 			// ошибки имени
 			addEventListener("Имя", function(e:Event, data:String):void { proverka_name(data); } );
 			

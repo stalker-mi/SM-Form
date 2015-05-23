@@ -36,7 +36,7 @@ package
 		}
 		
 		// Мое поле
-		public function AddText(id:int=0,txt_y:Number=100, text:String="", default_text:String="", tips:int=0,allLower:Boolean=false):void{
+		public function AddText(id:int=0,txt_y:Number=100, text:String="", default_text:String="", tips:int=0,allLower:int=0):void{
 			// поле label
 			var txt:TextField = new TextField(200, 28, text, "Verdana", 19);
 			txt.x=int((Constants.STAGE_WIDTH - txt.width) / 2);
@@ -53,12 +53,12 @@ package
 			if (default_text) input1.text = default_text;
 			input1.backgroundSkin = new Image(Root.assets.getTexture("border0000"));
 			input1.addEventListener(FeathersEventType.FOCUS_OUT, function():void {
-				if (allLower) {
+				if (allLower==1) {
 					// Заменяет выражение типа ВыРаЖЕниЕ на Выражение
 					input1.text = input1.text.substr(0,1).toUpperCase()+input1.text.substr(1).toLowerCase();
 				}
-				else {
-					// Заменяет выражение типа ВыРаЖЕниЕ на выражение
+				if (allLower == 2) {
+					// Заменяет выражение типа ВыРаЖЕниЕ на Выражение
 					input1.text = input1.text.toLowerCase();
 				}
 				//очищаем
@@ -82,6 +82,13 @@ package
 			addChild(error1);
 			errorsArr[id] = error1;
 			mData[id] = input1;
+		}
+		
+		public function addText2(text:String):void {
+			var txt:TextField = new TextField(200, 28, text, "Verdana", 19);
+			txt.x=int((Constants.STAGE_WIDTH - txt.width) / 2);
+			txt.y=100;
+			addChild(txt);
 		}
 		
 		// вывод ошибок
