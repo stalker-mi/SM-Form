@@ -8,6 +8,7 @@ package
 	
 	import feathers.controls.TextInput;
 	import feathers.events.FeathersEventType;
+	import feathers.controls.ScrollContainer;
 	/**
 	 * ...
 	 * @author vovik
@@ -16,6 +17,7 @@ package
 	{
 		public var errorsArr:Array;
 		public var mData:Array;
+		public var txt_container:TextField;
 		
 		public function SignIn() 
 		{
@@ -84,11 +86,20 @@ package
 			mData[id] = input1;
 		}
 		
+		// вывод
 		public function addText2(text:String):void {
-			var txt:TextField = new TextField(200, 28, text, "Verdana", 19);
-			txt.x=int((Constants.STAGE_WIDTH - txt.width) / 2);
-			txt.y=100;
-			addChild(txt);
+			// прокручивающийся контейнер
+			var container:ScrollContainer = new ScrollContainer();
+			container.y=100;
+			container.width = 300;
+			container.height = 100;
+			addChild( container );
+			// текст вывода
+			txt_container= new TextField(200, 228, text, "Verdana", 19);
+			txt_container.x=int((Constants.STAGE_WIDTH - txt_container.width) / 2);
+			txt_container.vAlign = "top";
+			txt_container.visible = false;
+			container.addChild(txt_container);
 		}
 		
 		// вывод ошибок

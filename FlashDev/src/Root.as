@@ -21,13 +21,15 @@
         
         public function Root()
         {
-            //addEventListener(Menu.LOG_IN, onStartGame);
+            addEventListener(Menu.LOG_IN, onLogIn);
+			addEventListener(LogIn.LOG_OUT, onLogOut);
 			addEventListener(Menu.SIGN_IN, onSignIn);
             addEventListener(SignIn_step1.NEXT,  onNext);
 			addEventListener(SignIn_step1.BACK,  onNext);
 			addEventListener(SignIn_step2.NEXT,  onNext);
 			addEventListener(SignIn_step2.BACK,  onNext);
 			addEventListener(SignIn_step3.OK, onNext);
+			addEventListener(SignIn_step3.BACK,  onNext);
 			addEventListener(SignIn_step3.BACK,  onNext);
             // not more to do here -- Startup will call "start" immediately.
         }
@@ -48,7 +50,12 @@
         {
             trace("Sign In!");
             showScene(SignIn_step1);
-			//showScene(SignIn_step3);
+        }
+		
+		private function onLogIn(event:Event):void
+        {
+            trace("Log In!");
+            showScene(LogIn);
         }
 		
 		private function onNext(event:Event):void
@@ -62,9 +69,14 @@
 			if (event.type == "back2") showScene(SignIn_step1);
 			// события для SignIn_step3
 			if (event.type == "back3") showScene(SignIn_step2);
-			if (event.type == "ok") showScene(Menu);
+			if (event.type == "ok") onLogOut(null);
         }
 		
+		private function onLogOut(event:Event):void
+		{
+			myUser = new User();
+			showScene(Menu);
+		}
 		
         private function showScene(screen:Class):void
         {

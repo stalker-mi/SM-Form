@@ -62,6 +62,7 @@
 			input1.isEditable = true;
 			input1.paddingLeft = 20;
 			input1.textEditorProperties.fontSize = 20;
+			input1.displayAsPassword = true;
 			input1.backgroundSkin=new Image(Root.assets.getTexture("border0000"));
 			log_in.addChild(input1);
 			
@@ -71,6 +72,8 @@
             button1.y = 332;
             button1.addEventListener(Event.TRIGGERED, function():void {
 				Root.assets.playSound("click");
+				Root.user.Login = input.text;
+				Root.user.Password = input1.text;
 				dispatchEventWith(LOG_IN, true);
 			});
 			log_in.addChild(button1);

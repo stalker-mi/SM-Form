@@ -6,79 +6,29 @@
 	import starling.events.Event;
 	import starling.text.TextField;
 		
-	import flash.filesystem.*;	
-	
-	import feathers.controls.ScrollContainer;
-	import starling.display.Quad;
-		
-	public class LogIn extends Sprite {
+	public class LogIn extends SignIn {
 
-		 public static const GAME_OVER:String = "gameOver";
+		 public static const LOG_OUT:String = "log_out";
 
 
 		public function LogIn() {
 			
-			var newFile:File = File.applicationStorageDirectory;
-  			newFile = newFile.resolvePath("preferences.xml");
-			var stream:FileStream=new FileStream();
-			stream.open(newFile, FileMode.READ);
-			var prefsXML:XML = XML(stream.readUTFBytes(stream.bytesAvailable));
-			stream.close();
+			var error:Boolean;
+			addText2("Вы вошли как\n"+Root.user.Login);
+			if (Root.user.Login == "") txt_container.text = "Поле логин пустое\n";
+			if (Root.user.Password == "") txt_container.text = "Поле пароль пустое\n";
 			
-			var container:ScrollContainer = new ScrollContainer();
-			container.width = 300;
-			container.height = 300;
-			addChild( container );
-			
-			
-			var str:String="";
-			for(var i:int=0;i<prefsXML.number;i++)
-			str += prefsXML.word[i].word_text+"\n";
-			
-			
-			var txt:TextField = new TextField(150,450, str,"Times New Roman",
-											  15, 0xffffff);
-			txt.y=10;
-			txt.x=10;
-			//txt.hAlign="left";
-			txt.vAlign="top";
-			container.addChild(txt);
-			
-			str="";
-			for(i=0;i<prefsXML.number;i++)
-			str += prefsXML.word[i].word_translate+"\n";
-			
-			txt = new TextField(150,450, str,"Times New Roman",
-											  15, 0xffffff);
-			txt.y=10;
-			txt.x=170;
-			//txt.hAlign="left";
-			txt.vAlign="top";
-			container.addChild(txt);
-			
-			
-			
-			
-			var button:Button = new Button(Root.assets.getTexture("button_normal"), "ОК");
-            button.fontName = "Ubuntu";
-            button.fontSize = 16;
+			var button:Button = new Button(Root.assets.getTexture("button_in0000"), "Выйти");
+			button.fontSize = 24;
             button.x = int((Constants.STAGE_WIDTH - button.width) / 2);
-            button.y = Constants.STAGE_HEIGHT * 0.75;
-            button.addEventListener(Event.TRIGGERED, onButtonTriggered);
+            button.y = 334;
+            button.addEventListener(Event.TRIGGERED, function():void {
+				Root.assets.playSound("click");
+				dispatchEventWith(LOG_OUT,true);
+			});
             addChild(button);
 			
 			
-			
-			
-			
-			
-			
-		}
-		
-		private function onButtonTriggered():void
-        {
-			Root.assets.playSound("click");
-            dispatchEventWith(GAME_OVER, true, "rwe");
 		}
 
 	}
