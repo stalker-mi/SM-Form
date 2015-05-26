@@ -21,4 +21,12 @@
   <icon/>
   <customUpdateUI>false</customUpdateUI>
   <allowBrowserInvocation>false</allowBrowserInvocation>
+  <android>
+    <manifestAdditions>
+      <![CDATA[<manifest>
+<uses-permission android:name="android.permission.INTERNET"/>
+</manifest>]]>
+    </manifestAdditions>
+  </android>
+  <supportedLanguages>ru</supportedLanguages>
 </application>
