@@ -5,12 +5,30 @@ mysql_select_db("lesnajapol_stdnt") or die(mysql_error());
 mysql_set_charset("utf8");
 
 
-if(isset($_GET['input'])){
+if(isset($_GET['input1'])){
 
 echo '<form name="loginform" action="SMForm.php?login" method="post">
 			<p>Логин<br /><input type="text" name="login" value="" size="25" /></p>
 			<p>Пароль<br /> <input type="password" name="password" value="" size="25" /></p>
 			<input type="submit" name="submit" value="Войти &raquo;" />
+		</form>';
+
+
+}
+
+
+if(isset($_GET['input2'])){
+
+echo '<form name="loginform" action="SMForm.php?reg" method="post">
+			
+			<p>Имя<br /><input type="text" name="name" value="" size="25" /></p>
+			
+<p>Фамилия<br /><input type="text" name="surname" value="" size="25" /></p>
+<p>Пол<br /><input type="text" name="sex" value="" size="25" /></p>
+<p>E-mail<br /><input type="text" name="email" value="" size="25" /></p>
+<p>Логин<br /><input type="text" name="login" value="" size="25" /></p>
+<p>Пароль<br /> <input type="password" name="password" value="" size="25" /></p>
+			<input type="submit" name="submit" value="Регистрация &raquo;" />
 		</form>';
 
 
@@ -22,17 +40,17 @@ if(isset($_GET['login'])){
 	$login=$_POST['login']; 
 	$password=$_POST['password'];
 
-	if($login=="") {
+	if($login=="" || !preg_match ("/^[a-zA-Z][a-zA-Z0-9-_\.]{1,10}$/", $login)) {
 		echo "Ошибка логина\n";
 		$eroor=true;
 	}
 
-	if($password=="") {
+	if($password=="" || !preg_match ("/^[a-zA-Z0-9-_*.#%$!&@]{5,}$/", $password)) {
 		echo "Ошибка пароля\n";
 		$eroor=true;
 	}
 	
-	if(!$error){
+	if(!$eroor){
 		$password=md5($password);
 		$q = "SELECT * FROM SMForm_users WHERE login='$login' AND password='$password'";
 		$r =mysql_query($q) or die(mysql_error()); 
@@ -71,7 +89,7 @@ if(isset($_GET['reg'])){
 		echo "Ошибка фамилии\n";
 		$eroor=true;
 	}
-	if($sex=="" || preg_match ("/^[mj]$/", $sex)) {
+	if($sex=="" || !preg_match ("/^[mj]$/", $sex)) {
 		echo "Ошибка пола\n";
 		$eroor=true;
 	}
@@ -104,7 +122,7 @@ if(isset($_GET['reg'])){
 		echo "Пользователь с таким email уже существует\n";
 	}
 
-	if(!$error){
+	if(!$eroor){
 	$password=md5($password);
 	$q = "INSERT INTO SMForm_users (name,surname,sex,email,login,password) VALUES('$name','$surname','$sex','$email','$login','$password')";
 	$r =mysql_query($q) or die(mysql_error()); 
