@@ -32,21 +32,21 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
-      <path-element>C:\Users\1\Desktop\projects\SM-Form\FlashDev\src</path-element>
+      <path-element>C:\Users\1\Desktop\projects\SM-Form\Simple Flash\src</path-element>
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
     <library-path append="true">
-      <path-element>C:\Users\1\Desktop\projects\SM-Form\FlashDev\libs\feathers.swc</path-element>
-      <path-element>C:\Users\1\Desktop\projects\SM-Form\FlashDev\libs\starling.swc</path-element>
+      <path-element>C:\Users\1\Desktop\projects\SM-Form\Simple Flash\libs\starling.swc</path-element>
+      <path-element>C:\Users\1\Desktop\projects\SM-Form\Simple Flash\libs\feathers.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>
-    <path-element>C:\Users\1\Desktop\projects\SM-Form\FlashDev\src\Main.as</path-element>
+    <path-element>C:\Users\1\Desktop\projects\SM-Form\Simple Flash\src\Main.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>30</default-frame-rate>
   <default-size>
-    <width>320</width>
-    <height>480</height>
+    <width>800</width>
+    <height>600</height>
   </default-size>
 </flex-config>

@@ -4,13 +4,13 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="bin\SMForm.swf" />
+    <movie path="bin\SM-Form.swf" />
     <movie fps="30" />
-    <movie width="320" />
-    <movie height="480" />
+    <movie width="800" />
+    <movie height="600" />
     <movie version="17" />
     <movie minorVersion="0" />
-    <movie platform="AIR Mobile" />
+    <movie platform="Flash Player" />
     <movie background="#FFFFFF" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
@@ -52,9 +52,8 @@
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
-    <element path="libs\feathers.swc" />
     <element path="libs\starling.swc" />
-    <element path="assets\my.swc" />
+    <element path="libs\feathers.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
@@ -87,8 +86,8 @@
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />
-    <option testMovie="Custom" />
-    <option testMovieCommand="Run.bat" />
+    <option testMovie="Default" />
+    <option testMovieCommand="" />
   </options>
   <!-- Plugin storage -->
   <storage />

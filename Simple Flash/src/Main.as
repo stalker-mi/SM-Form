@@ -16,7 +16,8 @@ package
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 
-    [SWF(width="320", height="480", frameRate="30", backgroundColor="#000000")]
+    [SWF(width = "1024", height = "700", frameRate = "30", backgroundColor = "#000000")]
+	[Frame(factoryClass="Preloader")]
     public class Main extends Sprite
     {
 		//Вставка текстур
@@ -44,8 +45,16 @@ package
 
         private var mStarling:Starling;
 
-        public function Main()
-        {
+		public function Main() 
+		{
+			if (stage) init();
+			else addEventListener(flash.events.Event.ADDED_TO_STAGE, init);
+		}
+
+		private function init(e:flash.events.Event = null):void 
+		{
+			removeEventListener(flash.events.Event.ADDED_TO_STAGE, init);
+			// entry point
             // Создание и оптимизация сцены
             var iOS:Boolean = SystemUtil.platform == "IOS";
             var stageSize:Rectangle  = new Rectangle(0, 0, StageWidth, StageHeight);
